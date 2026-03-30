@@ -1,1 +1,1 @@
-# handwrite_classical_algorithm
+# embodied_intelligence_basic
