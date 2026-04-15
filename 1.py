@@ -50,10 +50,10 @@ if __name__ == '__main__':
     device=torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     # ToTensor(): 将PIL图片/numpy数组转为Tensor, 同时把像素值从[0,255]归一化到[0.0,1.0], 并将维度从(H,W,C)转为(C,H,W)
     transform = transforms.ToTensor()
-    #https://docs.pytorch.org/vision/0.22/generated/torchvision.datasets.MNIST.html
+    #MNIST数据集见:https://docs.pytorch.org/vision/0.22/generated/torchvision.datasets.MNIST.html
     train_dataset=datasets.MNIST(root='./data', train=True, transform=transform, download=True)
 
-    train_loader = DataLoader(train_dataset, batch_size=8, shuffle=True)
+    train_loader = DataLoader(train_dataset, batch_size=128, shuffle=True)
 
     latent_dim=32
     model = AutoEncoder(latent_dim=latent_dim).to(device)  #模型移到指定设备
@@ -84,7 +84,7 @@ if __name__ == '__main__':
 
 
     test_dataset = datasets.MNIST(root='./data', train=False, transform=transform, download=False)
-    test_loader = DataLoader(test_dataset, batch_size=8, shuffle=True)
+    test_loader = DataLoader(test_dataset, batch_size=6, shuffle=True)
 
     infer_model = AutoEncoder(latent_dim=latent_dim).to(device)
     infer_model.load_state_dict(torch.load(ckpt_path))
@@ -99,7 +99,7 @@ if __name__ == '__main__':
     n=images.shape[0]  # 批次大小
     fig, axes = plt.subplots(2, n, figsize=(n * 1.5, 3))
     for i in range(n):
-        axes[0, i].imshow(images[i].squeeze(), cmap='gray') #squeeze (1, 28, 28)->(28, 28)
+        axes[0, i].imshow(images[i].squeeze(), cmap='gray') #squeeze 去掉维度为1的 (1, 28, 28)->(28, 28)
         axes[0, i].axis('off')
         axes[1, i].imshow(reconstructed[i].view(28, 28).cpu().numpy(), cmap='gray')  #(784) -> (28, 28)
         axes[1, i].axis('off')
