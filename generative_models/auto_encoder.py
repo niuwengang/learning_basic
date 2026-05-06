@@ -99,7 +99,7 @@ if __name__ == '__main__':
     n=images.shape[0]  # 批次大小
     fig, axes = plt.subplots(2, n, figsize=(n * 1.5, 3))
     for i in range(n):
-        axes[0, i].imshow(images[i].squeeze(), cmap='gray') #squeeze 去掉维度为1的 (1, 28, 28)->(28, 28)
+        axes[0, i].imshow(images[i].squeeze(), cmap='gray') #! squeeze 去掉维度为1的 (1, 28, 28)->(28, 28)
         axes[0, i].axis('off')
         axes[1, i].imshow(reconstructed[i].view(28, 28).cpu().numpy(), cmap='gray')  #(784) -> (28, 28)
         axes[1, i].axis('off')
